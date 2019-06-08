@@ -151,13 +151,16 @@ public class activity_comunicacion extends Activity
                     //voy concatenando el msj
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage);
-                    int endOfLineIndex = recDataString.indexOf("\r\n");
+                    //int endOfLineIndex = recDataString.indexOf("\r\n");
+                    int endOfLineIndex = recDataString.indexOf("ç");
 
                     //cuando recibo toda una linea la muestro en el layout
                     if (endOfLineIndex > 0)
                     {
-                        String dataInPrint = recDataString.substring(0, endOfLineIndex);
-                        txtPotenciometro.setText(dataInPrint);
+                        if(recDataString.charAt(0)=='#') {
+                            String dataInPrint = recDataString.substring(1, endOfLineIndex);
+                            txtPotenciometro.setText(dataInPrint);
+                        }
 
                         recDataString.delete(0, recDataString.length());
                     }
