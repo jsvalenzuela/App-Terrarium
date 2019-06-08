@@ -28,6 +28,9 @@ public class activity_comunicacion extends Activity
     Button btnApagar;
     Button btnEncender;
     TextView txtPotenciometro;
+    //Agregado
+    TextView txtTemperatura;
+    TextView txtHumedad;
 
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
@@ -54,6 +57,10 @@ public class activity_comunicacion extends Activity
         btnApagar=(Button)findViewById(R.id.btnApagar);
         btnEncender=(Button)findViewById(R.id.btnEncender);
         txtPotenciometro=(TextView)findViewById(R.id.txtValorPotenciometro);
+
+        //agregados
+        txtTemperatura=(TextView)findViewById(R.id.tv_SensorTemp);
+        txtHumedad=(TextView)findViewById(R.id.tv_SensorHumedad);
 
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -159,7 +166,11 @@ public class activity_comunicacion extends Activity
                     {
                         if(recDataString.charAt(0)=='#') {
                             String dataInPrint = recDataString.substring(1, endOfLineIndex);
-                            txtPotenciometro.setText(dataInPrint);
+                            String [] sensores=dataInPrint.split("/");
+                            txtTemperatura.setText(sensores[0]);
+                            txtHumedad.setText(sensores[1]);
+                            //txtPotenciometro.setText(dataInPrint);
+
                         }
 
                         recDataString.delete(0, recDataString.length());

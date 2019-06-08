@@ -55,17 +55,46 @@ android:theme="@style/AppTheme">
     android:layout_toEndOf="@+id/btnApagar"
     tools:ignore="HardcodedText" />
 
-    <ImageView
-        android:id="@+id/imageView4"
+    <TextView
+        android:id="@+id/tv_Temperatura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/txtValorPotenciometro"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:adjustViewBounds="false"
-        android:background="@drawable/darth_vader"
-        android:contentDescription=""
-        tools:ignore="ContentDescription" />
+        android:text="Temperatura"
+        android:textAppearance="@android:style/TextAppearance.Material.Display1" />
+
+    <TextView
+        android:id="@+id/tv_SensorTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_Temperatura"
+        android:layout_marginStart="73dp"
+        android:layout_marginLeft="73dp"
+        android:layout_marginBottom="13dp"
+        android:layout_toEndOf="@+id/tv_Temperatura"
+        android:layout_toRightOf="@+id/tv_Temperatura"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+    <TextView
+        android:id="@+id/tv_Humedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_Temperatura"
+        android:layout_marginTop="42dp"
+        android:text="Humedad"
+        android:textAppearance="@android:style/TextAppearance.Material.Display1" />
+
+    <TextView
+        android:id="@+id/tv_SensorHumedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_Humedad"
+        android:layout_marginStart="124dp"
+        android:layout_marginLeft="124dp"
+        android:layout_marginBottom="13dp"
+        android:layout_toEndOf="@+id/tv_Humedad"
+        android:layout_toRightOf="@+id/tv_Humedad"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
 </RelativeLayout>
