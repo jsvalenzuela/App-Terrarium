@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import android.app.Activity;
@@ -29,17 +30,24 @@ import android.widget.Toast;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import static android.content.ContentValues.TAG;
+
+
 /*********************************************************************************************************
  * Activity Principal de la App. Es la primiera activity que se ejecuta cuando el usuario ingresa a la App
  **********************************************************************************************************/
 
 public class MainActivity extends Activity
 {
+	//agrego al broaccast
+	public static final String BROADCAST_ACTION = "net.londatiga.android.bluetooth";
+	MyBroadCastReceiver myBroadCastReceiver;
+	private String campo1;
 	private TextView txtEstado;
 	private Button btnActivar;
 	private Button btnEmparejar;
 	private Button btnBuscar;
-
+	private final String TAG = "MainActivity";
 	private ProgressDialog mProgressDlg;
 
 	private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<BluetoothDevice>();
@@ -64,6 +72,10 @@ public class MainActivity extends Activity
 	//Metodo On create
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		myBroadCastReceiver = new MyBroadCastReceiver();
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(BROADCAST_ACTION);
+		registerReceiver(myBroadCastReceiver, intentFilter);
 
 		setContentView(R.layout.activity_main);
 
@@ -72,6 +84,10 @@ public class MainActivity extends Activity
 		btnActivar = (Button) findViewById(R.id.btnActivar);
 		btnEmparejar = (Button) findViewById(R.id.btnEmparejar);
 		btnBuscar = (Button) findViewById(R.id.btnBuscar);
+
+		//Invoco al api
+		Intent intentApi = new Intent(MainActivity.this, BackgroundRestService.class);
+		startService(intentApi);
 
 		//Se crea un adaptador para podermanejar el bluethoot del celular
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -91,6 +107,7 @@ public class MainActivity extends Activity
 			enableComponent();
 		}
 	}
+
 
 	protected  void enableComponent()
 	{
@@ -356,3 +373,30 @@ public class MainActivity extends Activity
 	}
 
 }
+
+
+class MyBroadCastReceiver extends BroadcastReceiver
+{
+
+	@Override
+	public void onReceive(Context context, Intent intent) {
+
+		try
+		{
+			Log.d(TAG, "onReceive() called");
+
+
+			// uncomment this line if you had sent some data
+               String data = intent.getStringExtra("title"); // data is a key specified to intent while sending broadcast
+//                Log.e(TAG, "data=="+data);
+			String a = "pirulo";
+
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+}
+
+

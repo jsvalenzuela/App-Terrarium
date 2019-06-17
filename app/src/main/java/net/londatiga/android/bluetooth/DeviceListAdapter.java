@@ -2,7 +2,7 @@ package net.londatiga.android.bluetooth;
 
 import java.util.List;
 
-import net.londatiga.android.bluetooth.R;
+import net.londatiga.android.bluetooth.R.*;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
