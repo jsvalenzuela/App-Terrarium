@@ -105,7 +105,7 @@ public class DeviceListActivity extends Activity
                 unpairDevice(device);
             }
             else
-            {
+           {
 
                 //Si no esta emparejado,quiere decir que se selecciono emparjar y entonces se le empareja
                 showToast("Emparejando");
