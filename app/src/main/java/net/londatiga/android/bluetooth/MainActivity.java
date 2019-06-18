@@ -47,6 +47,7 @@ public class MainActivity extends Activity
 	private Button btnActivar;
 	private Button btnEmparejar;
 	private Button btnBuscar;
+	private Button btnModoAutomatico;
 	private final String TAG = "MainActivity";
 	private ProgressDialog mProgressDlg;
 
@@ -85,9 +86,14 @@ public class MainActivity extends Activity
 		btnEmparejar = (Button) findViewById(R.id.btnEmparejar);
 		btnBuscar = (Button) findViewById(R.id.btnBuscar);
 
+		//agregado boton automatico
+		btnModoAutomatico = (Button) findViewById(R.id.btnModoAutomatico);
+		btnModoAutomatico.setEnabled(true);
+		btnModoAutomatico.setOnClickListener(btnModoAutomaticoListener);
+
 		//Invoco al api
-		Intent intentApi = new Intent(MainActivity.this, BackgroundRestService.class);
-		startService(intentApi);
+		//Intent intentApi = new Intent(MainActivity.this, BackgroundRestService.class);
+		//startService(intentApi);
 
 		//Se crea un adaptador para podermanejar el bluethoot del celular
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -125,6 +131,7 @@ public class MainActivity extends Activity
 			btnBuscar.setOnClickListener(btnBuscarListener);
 
 			btnActivar.setOnClickListener(btnActivarListener);
+
 
 			//se determina si esta activado el bluethoot
 			if (mBluetoothAdapter.isEnabled())
@@ -301,6 +308,7 @@ public class MainActivity extends Activity
 	};
 
 
+
 	private View.OnClickListener btnActivarListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -316,7 +324,13 @@ public class MainActivity extends Activity
 		}
 	};
 
-
+	private View.OnClickListener btnModoAutomaticoListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent (v.getContext(), AutomaticoModoActivity.class);
+			startActivityForResult(intent, 0);
+		}
+	};
 	private DialogInterface.OnClickListener btnCancelarDialogListener = new DialogInterface.OnClickListener() {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
