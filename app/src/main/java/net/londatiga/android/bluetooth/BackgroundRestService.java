@@ -4,78 +4,61 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import net.londatiga.android.adapter.RestApiAdapter;
-import net.londatiga.android.entities.Notification;
-import net.londatiga.android.entities.NotificationResponse;
-import net.londatiga.android.utils.EndpointsApi;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.io.IOException;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 
 public class BackgroundRestService extends IntentService {
 
     private final String TAG = "BackgroundRestService";
-    ;
+
+
+
+    String baseUrl = "http://restapisoa.dx.am/restapi/v1";  // This is the API base URL (GitHub API)
+    String url;
+
     public BackgroundRestService(){
 
         super("BackgroundRestService");
     }
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        /*SE CREA METODO PARA CONSUMIR REST*/
-            Notification notifications = null;
-            RestApiAdapter restApiAdapter = new RestApiAdapter();
-            Gson gson = restApiAdapter.convierteGsonDesearilizadorNotificaciones();
-            EndpointsApi endpointsApi = restApiAdapter.establecerConexionRestApi(gson);
+        this.url = this.baseUrl + "/Lomas de Zamora"+ "/clima";
 
-            Call<NotificationResponse> responseCall;
-            responseCall = endpointsApi.getNotificaciones();
+        OkHttpClient client= new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Response response = null;
 
 
-       try {
-            //Response<NotificationResponse> response= responseCall.execute();
-            NotificationResponse notificationResponse = responseCall.execute().body();
-
-            if (notificationResponse != null) {
-               notifications = notificationResponse.getNotifications();
-            }
-            Log.d(TAG, "Service Start");
-           sendMyBroadCast(notifications);
+        try {
+            response = client.newCall(request).execute();
+            String rs = response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        /*FIN METODO*/
     }
 
 
-    private void sendMyBroadCast(Notification notification)
-    {
-        try
-        {
-            Intent broadCastIntent = new Intent();
-            broadCastIntent.setAction(MainActivity.BROADCAST_ACTION);
-            broadCastIntent.putExtra("userId",notification.getUserId());
-            broadCastIntent.putExtra("id", notification.getId());
-            broadCastIntent.putExtra("title",notification.getTitle());
-            broadCastIntent.putExtra("completed",notification.isCompleted());
-            ///uncomment this line if you want to send data
-         // broadCastIntent.putExtra(
 
-            sendBroadcast(broadCastIntent);
 
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+
 }

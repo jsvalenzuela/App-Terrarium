@@ -50,7 +50,7 @@ public class MainActivity extends Activity
 	private Button btnModoAutomatico;
 	private final String TAG = "MainActivity";
 	private ProgressDialog mProgressDlg;
-
+	private String pistola;
 	private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<BluetoothDevice>();
 
 	private BluetoothAdapter mBluetoothAdapter;
@@ -73,10 +73,10 @@ public class MainActivity extends Activity
 	//Metodo On create
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myBroadCastReceiver = new MyBroadCastReceiver();
+		/*myBroadCastReceiver = new MyBroadCastReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(BROADCAST_ACTION);
-		registerReceiver(myBroadCastReceiver, intentFilter);
+		registerReceiver(myBroadCastReceiver, intentFilter);*/
 
 		setContentView(R.layout.activity_main);
 
@@ -328,7 +328,7 @@ public class MainActivity extends Activity
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent (v.getContext(), AutomaticoModoActivity.class);
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 		}
 	};
 	private DialogInterface.OnClickListener btnCancelarDialogListener = new DialogInterface.OnClickListener() {
