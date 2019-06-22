@@ -14,7 +14,7 @@ android:theme="@style/AppTheme">
 
     <EditText
         android:id="@+id/txtValorPotenciometro"
-        android:layout_width="wrap_content"
+        android:layout_width="355dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnApagar"
         android:layout_centerHorizontal="true"
@@ -30,18 +30,18 @@ android:theme="@style/AppTheme">
         android:textStyle="normal|bold"
         tools:ignore="HardcodedText" />
 
-<Button
-    android:text="Apagar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="50dp"
-    android:layout_marginStart="50dp"
-    android:id="@+id/btnApagar"
-    android:layout_marginBottom="142dp"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    tools:ignore="HardcodedText" />
+    <Button
+        android:id="@+id/btnApagar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="59dp"
+        android:layout_marginLeft="59dp"
+        android:layout_marginBottom="28dp"
+        android:text="Apagar"
+        tools:ignore="HardcodedText" />
 
 <Button
     android:text="Encender"
@@ -59,17 +59,23 @@ android:theme="@style/AppTheme">
         android:id="@+id/tv_Temperatura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="94dp"
         android:text="Temperatura"
         android:textAppearance="@android:style/TextAppearance.Material.Display1" />
 
     <TextView
         android:id="@+id/tv_SensorTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="158dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/sp_Modo"
+        android:layout_alignRight="@+id/sp_Modo"
         android:layout_alignBottom="@+id/tv_Temperatura"
-        android:layout_marginStart="73dp"
-        android:layout_marginLeft="73dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="-1dp"
         android:layout_toEndOf="@+id/tv_Temperatura"
         android:layout_toRightOf="@+id/tv_Temperatura"
         android:text="TextView"
@@ -80,21 +86,73 @@ android:theme="@style/AppTheme">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_Temperatura"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="17dp"
         android:text="Humedad"
         android:textAppearance="@android:style/TextAppearance.Material.Display1" />
 
     <TextView
         android:id="@+id/tv_SensorHumedad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="159dp"
+        android:layout_height="10dp"
+        android:layout_alignStart="@+id/tv_SensorTemp"
+        android:layout_alignLeft="@+id/tv_SensorTemp"
+        android:layout_alignEnd="@+id/tv_SensorTemp"
+        android:layout_alignRight="@+id/tv_SensorTemp"
         android:layout_alignBottom="@+id/tv_Humedad"
-        android:layout_marginStart="124dp"
-        android:layout_marginLeft="124dp"
-        android:layout_marginBottom="13dp"
-        android:layout_toEndOf="@+id/tv_Humedad"
-        android:layout_toRightOf="@+id/tv_Humedad"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginRight="-1dp"
+        android:layout_marginBottom="20dp"
         android:text="TextView"
         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+    <Spinner
+        android:id="@+id/sp_Modo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="27dp" />
+
+    <Switch
+        android:id="@+id/sw_Ventilacion"
+        android:layout_width="394dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_Humedad"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
+        android:text="Ventilacion"
+        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textColor="#2D6B88" />
+
+    <Switch
+        android:id="@+id/sw_TechoDescubierto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sw_Ventilacion"
+        android:layout_marginTop="17dp"
+        android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
+        android:text="Techo Descubierto"
+        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textColor="#2D6B88" />
+
+    <Switch
+        android:id="@+id/sw_Iluminacion"
+        android:layout_width="394dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sw_TechoDescubierto"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
+        android:text="Iluminacion"
+        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textColor="#2D6B88" />
 
 </RelativeLayout>

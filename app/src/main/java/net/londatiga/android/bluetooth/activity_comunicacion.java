@@ -8,9 +8,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+//Agregado
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+/*import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;*/
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +42,15 @@ public class activity_comunicacion extends Activity
     //Agregado
     TextView txtTemperatura;
     TextView txtHumedad;
+    Spinner comboModo;
+    Switch switchVentilacion;
+    Switch swicthTecho;
+    Switch swicthIluminacion;
+
+    private String modo;
+    private String ventilacion;
+    private String techoDescubierto;
+    private String iluminacion;
 
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
@@ -50,6 +70,12 @@ public class activity_comunicacion extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        //se inicializan variables
+        modo="Manual";
+        ventilacion="NO";
+        techoDescubierto="NO";
+        iluminacion="NO";
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunicacion);
 
@@ -61,6 +87,78 @@ public class activity_comunicacion extends Activity
         //agregados
         txtTemperatura=(TextView)findViewById(R.id.tv_SensorTemp);
         txtHumedad=(TextView)findViewById(R.id.tv_SensorHumedad);
+        comboModo = (Spinner) findViewById(R.id.sp_Modo);
+        switchVentilacion=(Switch) findViewById(R.id.sw_Ventilacion);
+        swicthTecho=(Switch) findViewById(R.id.sw_TechoDescubierto);
+        swicthIluminacion=(Switch) findViewById(R.id.sw_Iluminacion);
+
+        //Se llena el spinner con los modos
+        String[] vec_modo = {"Manual","Inteligente"};
+        comboModo.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, vec_modo));
+        comboModo.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            //@Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                modo= (String) adapterView.getItemAtPosition(position);
+                mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                showToast("Cambiando a modo "+modo);
+            }
+
+            //@Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                // vacio
+
+            }
+        });
+
+        //Configuracion del switch de ventilacion
+        switchVentilacion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ventilacion="SI";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                    showToast("Ventilacion Activada");
+                } else {
+                    ventilacion="NO";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                    showToast("Ventilacion Desactivada");
+                }
+            }
+        });
+
+        //Configuracion del switch de techo
+        swicthTecho.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    techoDescubierto="SI";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                    showToast("Techo Descubierto Activado");
+                } else {
+                    techoDescubierto="NO";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                    showToast("Techo Descubierto Desactivado");
+                }
+            }
+        });
+
+        //Configuracion del switch de iluminacion
+        swicthIluminacion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    iluminacion="SI";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                    showToast("Iluminacion Activada");
+                } else {
+                    iluminacion="NO";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+";");
+                    showToast("Iluminacion Desactivada");
+                }
+            }
+        });
+
+
 
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -74,6 +172,7 @@ public class activity_comunicacion extends Activity
         btnApagar.setOnClickListener(btnApagarListener);
 
     }
+
 
     @Override
     //Cada vez que se detecta el evento OnResume se establece la comunicacion con el HC05, creando un
@@ -159,7 +258,7 @@ public class activity_comunicacion extends Activity
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage);
                     //int endOfLineIndex = recDataString.indexOf("\r\n");
-                    int endOfLineIndex = recDataString.indexOf("ç");
+                    int endOfLineIndex = recDataString.indexOf(";");
 
                     //cuando recibo toda una linea la muestro en el layout
                     if (endOfLineIndex > 0)
@@ -197,7 +296,6 @@ public class activity_comunicacion extends Activity
             showToast("Apagar el LED");
         }
     };
-
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
