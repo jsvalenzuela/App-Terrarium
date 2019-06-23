@@ -14,12 +14,21 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.TextView;
 
+import net.londatiga.android.utils.RestUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import static android.content.ContentValues.TAG;
 
 public class AutomaticoModoActivity extends Activity {
-    TextView tvMensaje,tvApi;
+    TextView tvMensaje, tvApi,tvApi2;
     public static final String BROADCAST_ACTION = "net.londatiga.android.bluetooth";
-    BroadcastReceiverRest myBroadCastReceiver;
+    String baseUrl = "http://restapisoa.dx.am/restapi/v1";
+
     private final String TAG = "AutomaticoModoActivity";
 
 
@@ -30,55 +39,45 @@ public class AutomaticoModoActivity extends Activity {
 
         tvMensaje = findViewById(R.id.tvMensaje);
         tvApi = findViewById(R.id.tvApi);
-       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        tvApi2 = findViewById(R.id.tvApi2);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,}, 1020);
-        }
-        else{
+        } else {
+
             iniciarLocalizacion();
         }
 
 
-       /*
-        //AGREGADO BROADCAST
-        myBroadCastReceiver = new BroadcastReceiverRest();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(myBroadCastReceiver, intentFilter);
-
-        //Invoco al api
-        Intent intentApi = new Intent(AutomaticoModoActivity.this, BackgroundRestService.class);
-        startService(intentApi);
-        */
-        //FIN AGREGADO
-
     }
-    private  void iniciarLocalizacion(){
+
+    private void iniciarLocalizacion() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Localizacion localizacion = new Localizacion();
 
-        localizacion.setAutomaticoModoActivity(this,tvMensaje);
+        localizacion.setAutomaticoModoActivity(this, tvMensaje);
+
         final boolean gpsEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        if(!gpsEnable){
+        if (!gpsEnable) {
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(settingsIntent);
         }
-        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},1001);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1001);
 
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0, localizacion);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0,localizacion);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, localizacion);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, localizacion);
 
-        tvMensaje.setText("Localizacion agregada");
+        tvMensaje.setText("Obteniendo ubicacion ...");
     }
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int [] grantResults)
-    {
-        if(requestCode == 1000){
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1000) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 iniciarLocalizacion();
                 return;
@@ -87,24 +86,43 @@ public class AutomaticoModoActivity extends Activity {
         }
     }
 
-    class BroadcastReceiverRest extends BroadcastReceiver {
+    public void setEstadistica(String localidadRecibida) {
+        String urlApiClima = this.baseUrl + "/" + localidadRecibida + "/estadistica";
+        RestUtils restApiClima = new RestUtils(urlApiClima);
+        try {
+            JSONObject jsonObject = restApiClima.consumirApi();
+            Integer precipitacion = jsonObject.getJSONObject("estadistica").getInt("precipitacionAnual");
+            Integer temperaturaAnual = jsonObject.getJSONObject("estadistica").getInt("temperaturaAnual");
+            tvApi2.setText(precipitacion +" " + temperaturaAnual);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+        } catch (IOException e1) {
+            e1.printStackTrace();
 
-            try {
-                Log.d(TAG, "onReceive() called");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+    }
 
-                // uncomment this line if you had sent some data
-                String data = intent.getStringExtra("nombre"); // data is a key specified to intent while sending broadcast
-                tvApi.setText(data);
-                // Log.e(TAG, "data=="+data);
+    public void setClima(String localidadRecibida) {
+        String urlApiClima = this.baseUrl + "/" + localidadRecibida + "/clima";
+        RestUtils restApiClima = new RestUtils(urlApiClima);
+        try {
+            JSONObject jsonObject = restApiClima.consumirApi();
+            String nombre = jsonObject.getJSONObject("clima").getString("nombre");
+            Integer temperatura = jsonObject.getJSONObject("clima").getInt("temperatura");
+            Integer probabilidad = jsonObject.getJSONObject("clima").getInt("probabilidad");
+            tvApi.setText(nombre +" " + temperatura + " " + probabilidad);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
 
+        } catch (IOException e1) {
+            e1.printStackTrace();
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

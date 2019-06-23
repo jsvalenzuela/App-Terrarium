@@ -13,26 +13,36 @@
             android:id="@+id/tvMensaje"
             android:layout_width="233dp"
             android:layout_height="83dp"
-            android:layout_marginBottom="384dp"
+            android:layout_marginBottom="416dp"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.448"
+            app:layout_constraintHorizontal_bias="0.449"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/tvApi"
-            android:layout_width="163dp"
-            android:layout_height="100dp"
-            android:layout_marginEnd="44dp"
-            android:layout_marginRight="44dp"
-            android:layout_marginBottom="216dp"
+            android:layout_width="229dp"
+            android:layout_height="104dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="240dp"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tvMensaje"
             app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tvApi2"
+            android:layout_width="233dp"
+            android:layout_height="83dp"
+            android:layout_marginBottom="92dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvMensaje" />
 
 </android.support.constraint.ConstraintLayout>
 

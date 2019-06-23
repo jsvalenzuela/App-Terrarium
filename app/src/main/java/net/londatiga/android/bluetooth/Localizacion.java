@@ -18,39 +18,43 @@ public class Localizacion implements LocationListener {
     AutomaticoModoActivity automaticoModoActivity;
     TextView tvMensaje;
 
-    public void  setAutomaticoModoActivity(AutomaticoModoActivity automaticoModoActivity, TextView tvMensaje){
+
+    public void setAutomaticoModoActivity(AutomaticoModoActivity automaticoModoActivity, TextView tvMensaje) {
         this.automaticoModoActivity = automaticoModoActivity;
         this.tvMensaje = tvMensaje;
     }
+
 
     @Override
     public void onLocationChanged(Location location) {
         //este metodo se ejeta cuando gps recibe coordenandas
         Geocoder geocoder;
         List<Address> direccion = null;
-        Geocoder geoCoder = new Geocoder(automaticoModoActivity,  Locale.getDefault());
+        Geocoder geoCoder = new Geocoder(automaticoModoActivity, Locale.getDefault());
         try {
-           direccion = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            direccion = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        String texto = "Mi ubicacion es " +    direccion.get(0).getLocality();
+        String localidad = direccion.get(0).getLocality();
+        String texto = "Mi ubicacion es " + localidad;
         tvMensaje.setText(texto);
+        automaticoModoActivity.setClima(localidad);
+        automaticoModoActivity.setEstadistica(localidad);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        switch (status){
+        switch (status) {
             case LocationProvider.AVAILABLE:
-                Log.d("debug","LocationProvider.AVAILABLE");
+                Log.d("debug", "LocationProvider.AVAILABLE");
                 break;
             case LocationProvider.OUT_OF_SERVICE:
-                Log.d("debug","LocationProvider.OUT_OF_SERVICE");
+                Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
                 break;
             case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                Log.d("debug","LocationProvider.TEMPORARILY_UNAVAILABLE");
+                Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
                 break;
         }
     }
