@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,12 @@ import android.widget.Toast;
 //Agregado
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import java.lang.Math;
+
 /*import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;*/
@@ -36,9 +43,7 @@ import java.util.UUID;
 public class activity_comunicacion extends Activity
 {
 
-    Button btnApagar;
-    Button btnEncender;
-    TextView txtPotenciometro;
+
     //Agregado
     TextView txtTemperatura;
     TextView txtHumedad;
@@ -51,6 +56,12 @@ public class activity_comunicacion extends Activity
     private String ventilacion;
     private String techoDescubierto;
     private String iluminacion;
+
+
+    //Se utilizar para detectar el shake
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
@@ -80,9 +91,6 @@ public class activity_comunicacion extends Activity
         setContentView(R.layout.activity_comunicacion);
 
         //Se definen los componentes del layout
-        btnApagar=(Button)findViewById(R.id.btnApagar);
-        btnEncender=(Button)findViewById(R.id.btnEncender);
-        txtPotenciometro=(TextView)findViewById(R.id.txtValorPotenciometro);
 
         //agregados
         txtTemperatura=(TextView)findViewById(R.id.tv_SensorTemp);
@@ -159,7 +167,6 @@ public class activity_comunicacion extends Activity
         });
 
 
-
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -167,9 +174,28 @@ public class activity_comunicacion extends Activity
         //El hilo secundario va a mostrar informacion al layout atraves utilizando indeirectamente a este handler
         bluetoothIn = Handler_Msg_Hilo_Principal();
 
-        //defino los handlers para los botones Apagar y encender
-        btnEncender.setOnClickListener(btnEncenderListener);
-        btnApagar.setOnClickListener(btnApagarListener);
+
+        // ShakeDetector inicializacion
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            public void onShake(int count) {
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
+                 * method you would use to setup whatever you want done once the
+                 * device has been shook.
+                 */
+
+                //corre el switch de iluminacion
+                if(swicthIluminacion.isChecked())
+                    swicthIluminacion.setChecked(false);
+                else
+                    swicthIluminacion.setChecked(true);
+            }
+        });
 
     }
 
@@ -222,6 +248,9 @@ public class activity_comunicacion extends Activity
         //I send a character when resuming.beginning transmission to check device is connected
         //If it is not an exception will be thrown in the write method and finish() will be called
         mConnectedThread.write("x");
+
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
     }
 
 
@@ -229,6 +258,9 @@ public class activity_comunicacion extends Activity
     //Cuando se ejecuta el evento onPause se cierra el socket Bluethoot, para no recibiendo datos
     public void onPause()
     {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+
         super.onPause();
         try
         {

@@ -12,49 +12,6 @@ android:paddingTop="@dimen/activity_vertical_margin"
 tools:context="net.londatiga.android.bluetooth.activity_comunicacion"
 android:theme="@style/AppTheme">
 
-    <EditText
-        android:id="@+id/txtValorPotenciometro"
-        android:layout_width="355dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnApagar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:ems="10"
-        android:fontFamily="serif"
-        android:freezesText="false"
-        android:inputType="textPersonName"
-        android:text="0"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="50sp"
-        android:textStyle="normal|bold"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/btnApagar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="59dp"
-        android:layout_marginLeft="59dp"
-        android:layout_marginBottom="28dp"
-        android:text="Apagar"
-        tools:ignore="HardcodedText" />
-
-<Button
-    android:text="Encender"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="56dp"
-    android:layout_marginStart="56dp"
-    android:id="@+id/btnEncender"
-    android:layout_below="@+id/txtValorPotenciometro"
-    android:layout_toRightOf="@+id/btnApagar"
-    android:layout_toEndOf="@+id/btnApagar"
-    tools:ignore="HardcodedText" />
-
     <TextView
         android:id="@+id/tv_Temperatura"
         android:layout_width="wrap_content"
@@ -66,16 +23,18 @@ android:theme="@style/AppTheme">
 
     <TextView
         android:id="@+id/tv_SensorTemp"
-        android:layout_width="158dp"
-        android:layout_height="40dp"
-        android:layout_alignEnd="@+id/sp_Modo"
-        android:layout_alignRight="@+id/sp_Modo"
+        android:layout_width="121dp"
+        android:layout_height="45dp"
+        android:layout_alignTop="@+id/tv_Temperatura"
         android:layout_alignBottom="@+id/tv_Temperatura"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginEnd="1dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="62dp"
+        android:layout_marginLeft="62dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="17dp"
         android:layout_marginRight="1dp"
-        android:layout_marginBottom="-1dp"
+        android:layout_marginBottom="1dp"
         android:layout_toEndOf="@+id/tv_Temperatura"
         android:layout_toRightOf="@+id/tv_Temperatura"
         android:text="TextView"
@@ -92,18 +51,20 @@ android:theme="@style/AppTheme">
 
     <TextView
         android:id="@+id/tv_SensorHumedad"
-        android:layout_width="159dp"
-        android:layout_height="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_SensorTemp"
         android:layout_alignStart="@+id/tv_SensorTemp"
         android:layout_alignLeft="@+id/tv_SensorTemp"
-        android:layout_alignEnd="@+id/tv_SensorTemp"
-        android:layout_alignRight="@+id/tv_SensorTemp"
         android:layout_alignBottom="@+id/tv_Humedad"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginEnd="-1dp"
-        android:layout_marginRight="-1dp"
-        android:layout_marginBottom="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="2dp"
         android:text="TextView"
         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
@@ -117,7 +78,7 @@ android:theme="@style/AppTheme">
     <Switch
         android:id="@+id/sw_Ventilacion"
         android:layout_width="394dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_below="@+id/tv_Humedad"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -126,24 +87,28 @@ android:theme="@style/AppTheme">
         android:layout_marginRight="1dp"
         android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
         android:text="Ventilacion"
-        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#2D6B88" />
 
     <Switch
         android:id="@+id/sw_TechoDescubierto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="382dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/sw_Ventilacion"
-        android:layout_marginTop="17dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="1dp"
         android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
         android:text="Techo Descubierto"
-        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#2D6B88" />
 
     <Switch
         android:id="@+id/sw_Iluminacion"
         android:layout_width="394dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_below="@+id/sw_TechoDescubierto"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -152,7 +117,22 @@ android:theme="@style/AppTheme">
         android:layout_marginRight="1dp"
         android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
         android:text="Iluminacion"
-        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#2D6B88" />
+
+    <Switch
+        android:id="@+id/sw_Riego"
+        android:layout_width="394dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/sw_Iluminacion"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="1dp"
+        android:switchTextAppearance="@android:style/TextAppearance.Material.Large"
+        android:text="Riego"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#2D6B88" />
 
 </RelativeLayout>
