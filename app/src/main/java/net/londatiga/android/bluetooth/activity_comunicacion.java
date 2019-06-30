@@ -51,12 +51,13 @@ public class activity_comunicacion extends Activity
     Switch switchVentilacion;
     Switch swicthTecho;
     Switch swicthIluminacion;
+    Switch switchRiego;
 
     private String modo;
     private String ventilacion;
     private String techoDescubierto;
     private String iluminacion;
-
+    private String riego;
 
     //Se utilizar para detectar el shake
     private SensorManager mSensorManager;
@@ -86,7 +87,7 @@ public class activity_comunicacion extends Activity
         ventilacion="NO";
         techoDescubierto="NO";
         iluminacion="NO";
-
+        riego = "NO";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunicacion);
 
@@ -99,6 +100,7 @@ public class activity_comunicacion extends Activity
         switchVentilacion=(Switch) findViewById(R.id.sw_Ventilacion);
         swicthTecho=(Switch) findViewById(R.id.sw_TechoDescubierto);
         swicthIluminacion=(Switch) findViewById(R.id.sw_Iluminacion);
+        switchRiego = (Switch)findViewById(R.id.sw_Riego);
 
         //Se llena el spinner con los modos
         String[] vec_modo = {"Manual","Inteligente"};
@@ -166,6 +168,20 @@ public class activity_comunicacion extends Activity
             }
         });
 
+        //Configuracion del switch de riego
+        switchRiego.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    riego="SI";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+"/"+riego+";");
+                    showToast("Riego Activado");
+                } else {
+                    riego="NO";
+                    mConnectedThread.write("#"+modo+"/"+ventilacion+"/"+techoDescubierto+"/"+iluminacion+"/"+riego+";");
+                    showToast("Riego Desactivado");
+                }
+            }
+        });
 
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -385,7 +401,15 @@ public class activity_comunicacion extends Activity
 
         //write method
         public void write(String input) {
-            byte[] msgBuffer = input.getBytes();           //converts entered String into bytes
+
+           int indexOfSubStr = input.indexOf('x');
+            String inputEnviar;
+           if(indexOfSubStr != -1
+           )
+                inputEnviar= input.substring(indexOfSubStr);
+           else
+               inputEnviar = input;
+            byte[] msgBuffer = inputEnviar.getBytes();           //converts entered String into bytes
             try {
                 mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
             } catch (IOException e) {
