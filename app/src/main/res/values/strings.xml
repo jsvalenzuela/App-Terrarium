@@ -18,5 +18,12 @@
     <string name="text_list_devices">Lista de dispositivos</string>
 
     <string name="text_pair">Emparejar</string>
+    
+    <string-array name="plantas">
+        <item> Tomates </item>
+        <item> Cactus </item>
+        <item> Limonero </item>
+        <item> Ficus </item>
+    </string-array>
 
 </resources>

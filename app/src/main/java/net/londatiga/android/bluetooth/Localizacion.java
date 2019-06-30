@@ -40,6 +40,7 @@ public class Localizacion implements LocationListener {
         String localidad = direccion.get(0).getLocality();
         String texto = "Mi ubicacion es " + localidad;
         tvMensaje.setText(texto);
+        localidad = localidad.replace(" " , "%20");
         automaticoModoActivity.setClima(localidad);
         automaticoModoActivity.setEstadistica(localidad);
     }

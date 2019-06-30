@@ -12,7 +12,12 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.londatiga.android.utils.RestUtils;
 
@@ -24,13 +29,14 @@ import java.net.MalformedURLException;
 
 import static android.content.ContentValues.TAG;
 
-public class AutomaticoModoActivity extends Activity {
-    TextView tvMensaje, tvApi,tvApi2;
+public class AutomaticoModoActivity extends Activity implements AdapterView.OnItemSelectedListener {
+
+    TextView tvMensaje, tvApi,tvApi2, tvApi3;
+    Spinner spinner ;
     public static final String BROADCAST_ACTION = "net.londatiga.android.bluetooth";
     String baseUrl = "http://restapisoa.dx.am/restapi/v1";
-
     private final String TAG = "AutomaticoModoActivity";
-
+    private Integer indiceLang ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +46,19 @@ public class AutomaticoModoActivity extends Activity {
         tvMensaje = findViewById(R.id.tvMensaje);
         tvApi = findViewById(R.id.tvApi);
         tvApi2 = findViewById(R.id.tvApi2);
+        tvApi3 = findViewById(R.id.tvApi3);
+
+        spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.plantas,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        //spinner.setOnItemSelectedListener(this);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,}, 1020);
+
         } else {
 
             iniciarLocalizacion();
@@ -53,6 +68,8 @@ public class AutomaticoModoActivity extends Activity {
     }
 
     private void iniciarLocalizacion() {
+
+
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Localizacion localizacion = new Localizacion();
 
@@ -93,7 +110,11 @@ public class AutomaticoModoActivity extends Activity {
             JSONObject jsonObject = restApiClima.consumirApi();
             Integer precipitacion = jsonObject.getJSONObject("estadistica").getInt("precipitacionAnual");
             Integer temperaturaAnual = jsonObject.getJSONObject("estadistica").getInt("temperaturaAnual");
+            temperaturaAnual = temperaturaAnual / 12 ;
+            //precipitacion = precipitacion / 12 ;
+            indiceLang = precipitacion / temperaturaAnual ;
             tvApi2.setText(precipitacion +" " + temperaturaAnual);
+            tvApi3.setText("indiceLang: "+indiceLang) ;
         } catch (MalformedURLException e) {
             e.printStackTrace();
 
@@ -115,6 +136,7 @@ public class AutomaticoModoActivity extends Activity {
             Integer temperatura = jsonObject.getJSONObject("clima").getInt("temperatura");
             Integer probabilidad = jsonObject.getJSONObject("clima").getInt("probabilidad");
             tvApi.setText(nombre +" " + temperatura + " " + probabilidad);
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
 
@@ -126,6 +148,17 @@ public class AutomaticoModoActivity extends Activity {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //String text = adapterView.getItemAtPosition(i).toString();
+        //Toast.makeText(adapterView.getContext(),text,Toast.LENGTH_LONG).show();
+        
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
 
 
