@@ -29,11 +29,18 @@ import java.net.MalformedURLException;
 
 import static android.content.ContentValues.TAG;
 
+<<<<<<< Updated upstream
 public class AutomaticoModoActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     TextView tvMensaje, tvApi,tvApi2, tvApi3;
     Spinner spinner ;
     public static final String BROADCAST_ACTION = "net.londatiga.android.bluetooth";
+=======
+public class AutomaticoModoActivity extends Activity {
+    TextView tvMensaje, tvApi,tvApi2;
+    public static final String BROADCAST_ACTION = "net.londatiga." +
+            "android.bluetooth";
+>>>>>>> Stashed changes
     String baseUrl = "http://restapisoa.dx.am/restapi/v1";
     private final String TAG = "AutomaticoModoActivity";
     private Integer indiceLang ;

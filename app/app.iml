@@ -98,6 +98,10 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-runtime-classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-verifier" />
+<<<<<<< Updated upstream
+=======
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-apk" />
+>>>>>>> Stashed changes
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-resources" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_app_manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_run_app_info_output_file" />

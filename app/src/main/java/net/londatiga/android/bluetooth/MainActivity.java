@@ -300,10 +300,28 @@ public class MainActivity extends Activity {
     private View.OnClickListener btnModoAutomaticoListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(v.getContext(), AutomaticoModoActivity.class);
-            startActivity(intent);
+
+            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+            if (pairedDevices == null || pairedDevices.size() == 0) {
+                showToast("No se encontraron dispositivos emparejados");
+            } else {
+                ArrayList<BluetoothDevice> list = new ArrayList<BluetoothDevice>();
+
+                list.addAll(pairedDevices);
+
+                Intent intent = new Intent(MainActivity.this, DeviceListActivity.class);
+
+                intent.putParcelableArrayListExtra("device.list", list);
+                intent.putExtra("modoElegido", "automatico");
+                startActivity(intent);
+            }
+
+            //Intent intent = new Intent(v.getContext(), AutomaticoModoActivity.class);
+            //startActivity(intent);
         }
     };
+
     private DialogInterface.OnClickListener btnCancelarDialogListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {

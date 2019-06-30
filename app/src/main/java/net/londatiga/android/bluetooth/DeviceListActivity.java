@@ -26,6 +26,7 @@ public class DeviceListActivity extends Activity
     private DeviceListAdapter mAdapter;
     private ArrayList<BluetoothDevice> mDeviceList;
     private int posicionListBluethoot;
+    private String modoElegido;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -39,6 +40,9 @@ public class DeviceListActivity extends Activity
 
         //obtengo por medio de un Bundle del intent la lista de dispositivos encontrados
         mDeviceList = getIntent().getExtras().getParcelableArrayList("device.list");
+
+        //Obtengo el modo que me servira para iniciar el activity correspondiente
+        modoElegido = getIntent().getExtras().getString("modoElegido");
 
         //defino un adaptador para el ListView donde se van mostrar en la activity los dispositovs encontrados
         mAdapter = new DeviceListAdapter(this);
@@ -140,9 +144,18 @@ public class DeviceListActivity extends Activity
                     //se inicia el Activity de comunicacion con el bluethoot, para transferir los datos.
                     //Para eso se le envia como parametro la direccion(MAC) del bluethoot Arduino
                     String direccionBluethoot = dispositivo.getAddress();
-                    Intent i = new Intent(DeviceListActivity.this, activity_comunicacion.class);
-                    i.putExtra("Direccion_Bluethoot", direccionBluethoot);
 
+                    Intent i = null;
+                    if(modoElegido == null || modoElegido.isEmpty())
+                    {
+                        i = new Intent(DeviceListActivity.this, activity_comunicacion.class);
+                        i.putExtra("Direccion_Bluethoot", direccionBluethoot);
+                    }
+                    else{
+                        i = new Intent(DeviceListActivity.this, AutomaticoTransferenciaArduino.class);
+                        i.putExtra("Direccion_Bluethoot", direccionBluethoot);
+
+                    }
                     startActivity(i);
 
                 }  //si se detrecto un desaemparejamiento
