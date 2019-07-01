@@ -1,13 +1,16 @@
 package net.londatiga.android.bluetooth;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class AutomaticoTransferenciaArduino extends Activity {
     TextView txtTemperatura;
     TextView txtHumedad;
+    TextView txtEstadoRiego;
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
     private BluetoothAdapter btAdapter = null;
@@ -40,7 +44,8 @@ public class AutomaticoTransferenciaArduino extends Activity {
 
         txtTemperatura=(TextView)findViewById(R.id.tv_SensorTemp);
         txtHumedad=(TextView)findViewById(R.id.tv_SensorHumedad);
-
+        txtEstadoRiego = (TextView) findViewById(R.id.tvEstadoRiego);
+        txtEstadoRiego.setVisibility(View.INVISIBLE);
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         //defino el Handler de comunicacion entre el hilo Principal  el secundario.
@@ -132,7 +137,43 @@ public class AutomaticoTransferenciaArduino extends Activity {
         //I send a character when resuming.beginning transmission to check device is connected
         //If it is not an exception will be thrown in the write method and finish() will be called
         mConnectedThread.write("x");
+
+        //showSettingsAlert();
+
     }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                AutomaticoTransferenciaArduino.this);
+
+        alertDialog.setTitle("Alerta de Riego");
+
+        alertDialog
+                .setMessage("Desea aprovechar el agua de lluvia?");
+
+        alertDialog.setPositiveButton("Aceptar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
+                        //mostrar en interfaz el combo regando, dentro de hilo del bluetooth
+                        //AutomaticoModoActivity.this.startActivity(intent);
+                        txtEstadoRiego.setText("Regando .....");
+                        txtEstadoRiego.setVisibility(View.VISIBLE);
+
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+    }
+
 
 
     public void onPause()

@@ -301,7 +301,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
-            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+           Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
             if (pairedDevices == null || pairedDevices.size() == 0) {
                 showToast("No se encontraron dispositivos emparejados");
@@ -310,15 +310,15 @@ public class MainActivity extends Activity {
 
                 list.addAll(pairedDevices);
 
-                Intent intent = new Intent(MainActivity.this, DeviceListActivity.class);
+                Intent intent = new Intent(MainActivity.this, AutomaticoModoActivity.class);
 
                 intent.putParcelableArrayListExtra("device.list", list);
                 intent.putExtra("modoElegido", "automatico");
                 startActivity(intent);
             }
 
-            //Intent intent = new Intent(v.getContext(), AutomaticoModoActivity.class);
-            //startActivity(intent);
+            /*Intent intent = new Intent(v.getContext(), AutomaticoModoActivity.class);
+            startActivity(intent);*/
         }
     };
 
