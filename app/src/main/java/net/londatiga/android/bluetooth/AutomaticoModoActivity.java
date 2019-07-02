@@ -141,8 +141,9 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         final boolean gpsEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if (!gpsEnable) {
-            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(settingsIntent);
+            showSettingsAlert("GPS");
+            //Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            //startActivity(settingsIntent);
         }
         if(!checkLocationPermission("android.permission.ACCESS_FINE_LOCATION")){
         /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -209,7 +210,7 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
             Integer temperaturaAnual = jsonObject.getJSONObject("estadistica").getInt("temperaturaAnual");
 
             indiceLang = precipitacion / temperaturaAnual ;
-            tvApi3.setText("indiceLang: "+indiceLang) ;
+           // tvApi3.setText("indiceLang: "+indiceLang) ;
         } catch (MalformedURLException e) {
             e.printStackTrace();
 
@@ -231,7 +232,7 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
             Integer temperatura = jsonObject.getJSONObject("clima").getInt("temperatura");
              this.probabilidad = jsonObject.getJSONObject("clima").getInt("probabilidad");
 
-            tvApi.setText(nombre +" " + temperatura + " " + probabilidad);
+           // tvApi.setText(nombre +" " + temperatura + " " + probabilidad);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -247,7 +248,7 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
     private View.OnClickListener btnButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //setRangoTemperaturas();
+            setRangoTemperaturas();
             Intent intent = new Intent(AutomaticoModoActivity.this, DeviceListActivity.class);
 
             intent.putParcelableArrayListExtra("device.list", mDeviceList);
