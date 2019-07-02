@@ -4,18 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,12 +29,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
-
 public class AutomaticoModoActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     TextView tvMensaje, tvApi,tvApi2, tvApi3;
-    Spinner spinner ;
+    Spinner spinner_Planta ;
     Button btnButton;
     public static final String BROADCAST_ACTION = "net.londatiga.android.bluetooth";
     String baseUrl = "http://restapisoa.dx.am/restapi/v1";
@@ -47,7 +41,9 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
     private String localidadObtenida;
     protected LocationManager locationManager;
     protected  Localizacion localizacion;
-    private  Integer probabilidad,huMax,tempMax;
+    private  Integer probabilidad,huMax,tempMax,huMin,tempMin;
+    private String tipoPlanta;
+    private String tipoSuelo;
 
     private ArrayList<BluetoothDevice> mDeviceList;
     private String modoElegido;
@@ -76,11 +72,31 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         tvApi2 = findViewById(R.id.tvApi2);
         tvApi3 = findViewById(R.id.tvApi3);
 
-        spinner = findViewById(R.id.spinner1);
+        //Se llena el spinner con los tipos de planta
+        spinner_Planta = findViewById(R.id.sp_TipoPlanta);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.plantas,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinner_Planta.setAdapter(adapter);
+        spinner_Planta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            //@Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                tipoPlanta= (String) adapterView.getItemAtPosition(position);
+                showToast(tipoSuelo+" "+tipoPlanta);
+
+            }
+
+            //@Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                tipoPlanta= (String) parent.getItemAtPosition(0);
+
+            }
+        });
+
+
         btnButton = findViewById(R.id.button);
         btnButton.setOnClickListener(btnButtonListener);
         if(!checkLocationPermission("android.permission.ACCESS_COARSE_LOCATION")){
@@ -177,18 +193,49 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         {
             setEstadistica(localidadObtenida);
             setClima(localidadObtenida);
+            setTipoSuelo();
+
+            //showToast(tipoSuelo+" "+tipoPlanta);
         }
 
     }
 
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void setTipoSuelo()
+    {
+        if(indiceLang<33)
+        {
+            tipoSuelo="Seco";
+        }
+        else
+        {
+            if(indiceLang<67)
+            {
+                tipoSuelo="Calido";
+            }
+            else
+            {
+                tipoSuelo="Humedo";
+            }
+
+        }
+
+    }
+
+
     public void setRangoTemperaturas(){
 
-        String urlApiClima = this.baseUrl + "/" + localidadObtenida + "/Humedo"+ "/Tomate";
+        String urlApiClima = this.baseUrl + "/"+tipoSuelo+ "/"+tipoPlanta;
         RestUtils restApiClima = new RestUtils(urlApiClima);
         try {
             JSONObject jsonObject = restApiClima.consumirApi();
             this.huMax = jsonObject.getJSONObject("suelo").getInt("humax");
             this.tempMax = jsonObject.getJSONObject("suelo").getInt("tempmax");
+            this.huMin = jsonObject.getJSONObject("suelo").getInt("humin");
+            this.tempMin = jsonObject.getJSONObject("suelo").getInt("tempmin");
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -249,11 +296,12 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         @Override
         public void onClick(View v) {
             setRangoTemperaturas();
-            Intent intent = new Intent(AutomaticoModoActivity.this, DeviceListActivity.class);
+            tvApi3.setText("humin:"+huMin.toString()+" humax:"+huMax.toString());
+            /*Intent intent = new Intent(AutomaticoModoActivity.this, DeviceListActivity.class);
 
             intent.putParcelableArrayListExtra("device.list", mDeviceList);
             intent.putExtra("modoElegido", "automatico");
-            startActivity(intent);
+            startActivity(intent);*/
 
         }
 
