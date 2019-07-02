@@ -155,6 +155,7 @@ public class AutomaticoTransferenciaArduino extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
+
                         //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
                         //mostrar en interfaz el combo regando, dentro de hilo del bluetooth
                         //AutomaticoModoActivity.this.startActivity(intent);
