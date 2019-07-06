@@ -26,7 +26,9 @@ public class DeviceListActivity extends Activity
     private DeviceListAdapter mAdapter;
     private ArrayList<BluetoothDevice> mDeviceList;
     private int posicionListBluethoot;
-    private String modoElegido;
+    private String modoElegido, huMaxRecibida;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -43,6 +45,9 @@ public class DeviceListActivity extends Activity
 
         //Obtengo el modo que me servira para iniciar el activity correspondiente
         modoElegido = getIntent().getExtras().getString("modoElegido");
+
+        //Obtengo humedad maxima
+        huMaxRecibida = getIntent().getExtras().getString("humedadPlanta");
 
         //defino un adaptador para el ListView donde se van mostrar en la activity los dispositovs encontrados
         mAdapter = new DeviceListAdapter(this);
@@ -154,6 +159,7 @@ public class DeviceListActivity extends Activity
                     else{
                         i = new Intent(DeviceListActivity.this, AutomaticoTransferenciaArduino.class);
                         i.putExtra("Direccion_Bluethoot", direccionBluethoot);
+                        i.putExtra("humedadPlanta",huMaxRecibida.toString());
 
                     }
                     startActivity(i);

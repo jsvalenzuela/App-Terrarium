@@ -186,7 +186,26 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         }
     }
 
+    public void showPlantaInexisisteAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                AutomaticoModoActivity.this);
 
+        alertDialog.setTitle("Planta inexistente");
+
+        alertDialog
+                .setMessage("Vuelva a elegir el tipo de planta");
+
+        alertDialog.setPositiveButton("Aceptar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+
+                    }
+                });
+
+        alertDialog.show();
+    }
 
     private class HiloApi extends Thread {
         public void run()
@@ -296,12 +315,13 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         @Override
         public void onClick(View v) {
             setRangoTemperaturas();
-            tvApi3.setText("humin:"+huMin.toString()+" humax:"+huMax.toString());
-            /*Intent intent = new Intent(AutomaticoModoActivity.this, DeviceListActivity.class);
+            //tvApi3.setText("humin:"+huMin.toString()+" humax:"+huMax.toString());
+            Intent intent = new Intent(AutomaticoModoActivity.this, DeviceListActivity.class);
 
             intent.putParcelableArrayListExtra("device.list", mDeviceList);
             intent.putExtra("modoElegido", "automatico");
-            startActivity(intent);*/
+            intent.putExtra("humedadPlanta", huMax.toString());
+            startActivity(intent);
 
         }
 

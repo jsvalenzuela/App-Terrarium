@@ -1,6 +1,7 @@
 package net.londatiga.android.bluetooth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import okhttp3.Address;
+
 import static android.content.ContentValues.TAG;
 
 
@@ -52,7 +55,7 @@ public class MainActivity extends Activity {
     private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<BluetoothDevice>();
 
     private BluetoothAdapter mBluetoothAdapter;
-
+    private HashMap<String ,String> mapDevices;
     public static final int MULTIPLE_PERMISSIONS = 10; // code you want.
 
     //se crea un array de String con los permisos a solicitar en tiempo de ejecucion
@@ -73,12 +76,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
+        mapDevices = new HashMap<String, String>();
         //Se definen los componentes del layout
         txtEstado = (TextView) findViewById(R.id.txtEstado);
         btnActivar = (Button) findViewById(R.id.btnActivar);
         btnEmparejar = (Button) findViewById(R.id.btnEmparejar);
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
+
 
         //agregado boton automatico
         btnModoAutomatico = (Button) findViewById(R.id.btnModoAutomatico);
@@ -163,6 +167,14 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
+    public void onStop()
+    {
+
+        super.onStop();
+        this.mapDevices.clear();
+    }
+
+
     private void showEnabled() {
         txtEstado.setText("Bluetooth Habilitar");
         txtEstado.setTextColor(Color.BLUE);
@@ -243,9 +255,14 @@ public class MainActivity extends Activity {
             else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //Se lo agregan sus datos a una lista de dispositivos encontrados
                 BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if(!mapDevices.containsKey(device.getAddress())){
+                    mapDevices.put(device.getAddress(),"");
+                    mDeviceList.add(device);
+                    showToast("Dispositivo Encontrado:" + device.getName());
+                }
 
-                mDeviceList.add(device);
-                showToast("Dispositivo Encontrado:" + device.getName());
+
+
             }
         }
     };
@@ -303,9 +320,9 @@ public class MainActivity extends Activity {
 
            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
-            if (pairedDevices == null || pairedDevices.size() == 0) {
-                showToast("No se encontraron dispositivos emparejados");
-            } else {
+           // if (pairedDevices == null || pairedDevices.size() == 0) {
+             //   showToast("No se encontraron dispositivos emparejados");
+            //} else {
                 ArrayList<BluetoothDevice> list = new ArrayList<BluetoothDevice>();
 
                 list.addAll(pairedDevices);
@@ -315,7 +332,7 @@ public class MainActivity extends Activity {
                 intent.putParcelableArrayListExtra("device.list", list);
                 intent.putExtra("modoElegido", "automatico");
                 startActivity(intent);
-            }
+           //}
 
             /*Intent intent = new Intent(v.getContext(), AutomaticoModoActivity.class);
             startActivity(intent);*/

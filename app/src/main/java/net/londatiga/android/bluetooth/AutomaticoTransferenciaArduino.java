@@ -22,15 +22,15 @@ import java.util.UUID;
 public class AutomaticoTransferenciaArduino extends Activity {
     TextView txtTemperatura;
     TextView txtHumedad;
-    TextView txtEstadoRiego;
+    TextView txtEstadoRiego, txtHumedadServicio;
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private StringBuilder recDataString = new StringBuilder();
-
+    private String huMaxRecibida;
     private AutomaticoTransferenciaArduino.ConnectedThread mConnectedThread;
-
+    private String respuestaUser;
     // SPP UUID service  - Funciona en la mayoria de los dispositivos
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -46,6 +46,7 @@ public class AutomaticoTransferenciaArduino extends Activity {
         txtHumedad=(TextView)findViewById(R.id.tv_SensorHumedad);
         txtEstadoRiego = (TextView) findViewById(R.id.tvEstadoRiego);
         txtEstadoRiego.setVisibility(View.INVISIBLE);
+        txtHumedadServicio = findViewById(R.id.tvHumedadServicio);
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         //defino el Handler de comunicacion entre el hilo Principal  el secundario.
@@ -81,6 +82,12 @@ public class AutomaticoTransferenciaArduino extends Activity {
                             //txtPotenciometro.setText(dataInPrint);
 
                         }
+                        if(respuestaUser != null ){
+                            if(respuestaUser.equals("SI")){
+
+                            }
+
+                        }
 
                         recDataString.delete(0, recDataString.length());
                     }
@@ -112,9 +119,11 @@ public class AutomaticoTransferenciaArduino extends Activity {
         Bundle extras = intent.getExtras();
 
         address = extras.getString("Direccion_Bluethoot");
-
+        huMaxRecibida = getIntent().getExtras().getString("humedadPlanta");
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
+        //Le agrego la humedad recibida por el servicio
 
+        txtHumedadServicio.setText(huMaxRecibida);
         //se realiza la conexion del Bluethoot crea y se conectandose a atraves de un socket
         try {
             btSocket = createBluetoothSocket(device);
@@ -131,14 +140,16 @@ public class AutomaticoTransferenciaArduino extends Activity {
                 //insert code to deal with this
             }
         }
+
+        //Una vez creado el socket, creo el hilo connectthread
         mConnectedThread = new AutomaticoTransferenciaArduino.ConnectedThread(btSocket);
         mConnectedThread.start();
 
         //I send a character when resuming.beginning transmission to check device is connected
         //If it is not an exception will be thrown in the write method and finish() will be called
-        mConnectedThread.write("x");
+        mConnectedThread.write("x");   //Al emparejar
 
-        //showSettingsAlert();
+        showSettingsAlert();
 
     }
 
@@ -155,6 +166,11 @@ public class AutomaticoTransferenciaArduino extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
+                        Integer humedadRecibida = 60;
+                        String modo = "Automatico";
+                        respuestaUser = "SI";
+
+                        mConnectedThread.write("#"+modo+"/"+humedadRecibida.toString()+"/"+respuestaUser+";");
 
                         //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
                         //mostrar en interfaz el combo regando, dentro de hilo del bluetooth

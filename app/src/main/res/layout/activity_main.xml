@@ -45,4 +45,5 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:enabled="false"
         android:text="Modo automatico" />
+
 </LinearLayout>
