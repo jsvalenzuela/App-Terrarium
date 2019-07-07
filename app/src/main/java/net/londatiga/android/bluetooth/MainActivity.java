@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
         //Se definen los componentes del layout
         txtEstado = (TextView) findViewById(R.id.txtEstado);
         btnActivar = (Button) findViewById(R.id.btnActivar);
-        btnEmparejar = (Button) findViewById(R.id.btnEmparejar);
+        //btnEmparejar = (Button) findViewById(R.id.btnEmparejar);
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
 
 
@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
         btnActivar.setText("Desactivar");
         btnActivar.setEnabled(true);
 
-        btnEmparejar.setEnabled(true);
+       // btnEmparejar.setEnabled(true);
         btnBuscar.setEnabled(true);
     }
 
