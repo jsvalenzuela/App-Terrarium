@@ -44,10 +44,10 @@ public class DeviceListActivity extends Activity
         mDeviceList = getIntent().getExtras().getParcelableArrayList("device.list");
 
         //Obtengo el modo que me servira para iniciar el activity correspondiente
-        modoElegido = getIntent().getExtras().getString("modoElegido");
+        //modoElegido = getIntent().getExtras().getString("modoElegido");
 
         //Obtengo humedad maxima
-        huMaxRecibida = getIntent().getExtras().getString("humedadPlanta");
+        //huMaxRecibida = getIntent().getExtras().getString("humedadPlanta");
 
         //defino un adaptador para el ListView donde se van mostrar en la activity los dispositovs encontrados
         mAdapter = new DeviceListAdapter(this);
@@ -150,7 +150,10 @@ public class DeviceListActivity extends Activity
                     //Para eso se le envia como parametro la direccion(MAC) del bluethoot Arduino
                     String direccionBluethoot = dispositivo.getAddress();
 
-                    Intent i = null;
+                    Intent i = new Intent(DeviceListActivity.this, ElegirModoActivity.class);
+                    i.putExtra("Direccion_Bluethoot", direccionBluethoot);
+
+                    /*Intent i = null;
                     if(modoElegido == null || modoElegido.isEmpty())
                     {
                         i = new Intent(DeviceListActivity.this, activity_comunicacion.class);
@@ -162,7 +165,7 @@ public class DeviceListActivity extends Activity
                         i.putExtra("humedadPlanta",huMaxRecibida.toString());
 
                     }
-                    startActivity(i);
+                    startActivity(i);*/
 
                 }  //si se detrecto un desaemparejamiento
                     else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {

@@ -22,13 +22,13 @@ import java.util.UUID;
 public class AutomaticoTransferenciaArduino extends Activity {
     TextView txtTemperatura;
     TextView txtHumedad;
-    TextView txtEstadoRiego, txtHumedadServicio;
+    TextView txtEstadoRiego, txtHumedadServicio, txtTemperaturaRecibida, txtTipoPlanta, txtTipoSueloRecibido;
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private StringBuilder recDataString = new StringBuilder();
-    private String huMaxRecibida;
+    private String huMaxRecibida, temperaturaRecibida, sueloRecibido, plantaRecibida;
     private AutomaticoTransferenciaArduino.ConnectedThread mConnectedThread;
     private String respuestaUser;
     // SPP UUID service  - Funciona en la mayoria de los dispositivos
@@ -47,6 +47,9 @@ public class AutomaticoTransferenciaArduino extends Activity {
         txtEstadoRiego = (TextView) findViewById(R.id.tvEstadoRiego);
         txtEstadoRiego.setVisibility(View.INVISIBLE);
         txtHumedadServicio = findViewById(R.id.tvHumedadServicio);
+        //txtTemperaturaRecibida = findViewById(R.id.tv_Temperatura);
+        txtTipoPlanta = findViewById(R.id.tvTipoPlantaTrans);
+        txtTipoSueloRecibido = findViewById(R.id.tvSueloTrans);
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         //defino el Handler de comunicacion entre el hilo Principal  el secundario.
@@ -119,11 +122,17 @@ public class AutomaticoTransferenciaArduino extends Activity {
         Bundle extras = intent.getExtras();
 
         address = extras.getString("Direccion_Bluethoot");
-        huMaxRecibida = getIntent().getExtras().getString("humedadPlanta");
-        BluetoothDevice device = btAdapter.getRemoteDevice(address);
         //Le agrego la humedad recibida por el servicio
+        huMaxRecibida = getIntent().getExtras().getString("humedadRecibida");
+        temperaturaRecibida = getIntent().getExtras().getString("temperaturaRecibida");
+        sueloRecibido = getIntent().getExtras().getString("sueloRecibido");
+        plantaRecibida = getIntent().getExtras().getString("tipoPlantaRecibida");
+        BluetoothDevice device = btAdapter.getRemoteDevice(address);
+
 
         txtHumedadServicio.setText(huMaxRecibida);
+        txtTipoSueloRecibido.setText(sueloRecibido);
+        txtTipoPlanta.setText(plantaRecibida);
         //se realiza la conexion del Bluethoot crea y se conectandose a atraves de un socket
         try {
             btSocket = createBluetoothSocket(device);

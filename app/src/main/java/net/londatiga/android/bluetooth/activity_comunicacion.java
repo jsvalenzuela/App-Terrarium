@@ -225,7 +225,6 @@ public class activity_comunicacion extends Activity
         //Obtengo el parametro, aplicando un Bundle, que me indica la Mac Adress del HC05
         Intent intent=getIntent();
         Bundle extras=intent.getExtras();
-
         address= extras.getString("Direccion_Bluethoot");
 
         BluetoothDevice device = btAdapter.getRemoteDevice(address);

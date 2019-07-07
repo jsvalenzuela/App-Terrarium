@@ -85,9 +85,9 @@ public class MainActivity extends Activity {
 
 
         //agregado boton automatico
-        btnModoAutomatico = (Button) findViewById(R.id.btnModoAutomatico);
-        btnModoAutomatico.setEnabled(true);
-        btnModoAutomatico.setOnClickListener(btnModoAutomaticoListener);
+        //btnModoAutomatico = (Button) findViewById(R.id.btnModoAutomatico);
+        //btnModoAutomatico.setEnabled(true);
+        //btnModoAutomatico.setOnClickListener(btnModoAutomaticoListener);
 
         //Se crea un adaptador para podermanejar el bluethoot del celular
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -115,7 +115,8 @@ public class MainActivity extends Activity {
             showUnsupported();
         } else {
             //si el celular soporta bluethoot, se definen los listener para los botones de la activity
-            btnEmparejar.setOnClickListener(btnEmparejarListener);
+
+            //btnEmparejar.setOnClickListener(btnEmparejarListener);
 
             btnBuscar.setOnClickListener(btnBuscarListener);
 
@@ -269,7 +270,7 @@ public class MainActivity extends Activity {
 
 
     //Metodo que actua como Listener de los eventos que ocurren en los componentes graficos de la activty
-    private View.OnClickListener btnEmparejarListener = new View.OnClickListener() {
+   /* private View.OnClickListener btnEmparejarListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -289,7 +290,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         }
-    };
+    };*/
 
     private View.OnClickListener btnBuscarListener = new View.OnClickListener() {
         @Override
@@ -314,7 +315,7 @@ public class MainActivity extends Activity {
         }
     };
 
-    private View.OnClickListener btnModoAutomaticoListener = new View.OnClickListener() {
+   /* private View.OnClickListener btnModoAutomaticoListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -334,10 +335,9 @@ public class MainActivity extends Activity {
                 startActivity(intent);
            //}
 
-            /*Intent intent = new Intent(v.getContext(), AutomaticoModoActivity.class);
-            startActivity(intent);*/
+
         }
-    };
+    };*/
 
     private DialogInterface.OnClickListener btnCancelarDialogListener = new DialogInterface.OnClickListener() {
         @Override

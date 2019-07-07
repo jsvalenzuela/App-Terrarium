@@ -46,7 +46,7 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
     private String tipoSuelo;
 
     private ArrayList<BluetoothDevice> mDeviceList;
-    private String modoElegido;
+    private String modoElegido,address;
 
     HiloApi hiloApi;
     public void setLocalidadObtenida(String parametro){
@@ -57,12 +57,15 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent=getIntent();
+        Bundle extras=intent.getExtras();
+        address= extras.getString("Direccion_Bluethoot");
 
         //obtengo por medio de un Bundle del intent la lista de dispositivos encontrados
-        mDeviceList = getIntent().getExtras().getParcelableArrayList("device.list");
+        //mDeviceList = getIntent().getExtras().getParcelableArrayList("device.list");
 
         //Obtengo el modo que me servira para iniciar el activity correspondiente
-        modoElegido = getIntent().getExtras().getString("modoElegido");
+        //modoElegido = getIntent().getExtras().getString("modoElegido");
 
         hiloApi = new HiloApi();
         setContentView(R.layout.automatico_modo);
@@ -84,28 +87,19 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
             {
                 tipoPlanta= (String) adapterView.getItemAtPosition(position);
-                showToast(tipoSuelo+" "+tipoPlanta);
-
             }
 
             //@Override
             public void onNothingSelected(AdapterView<?> parent)
             {
                 tipoPlanta= (String) parent.getItemAtPosition(0);
-
             }
         });
 
 
         btnButton = findViewById(R.id.button);
         btnButton.setOnClickListener(btnButtonListener);
-        if(!checkLocationPermission("android.permission.ACCESS_COARSE_LOCATION")){
 
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,}, 1020);
-        } else {
-
-            iniciarLocalizacion();
-        }
 
 
     }
@@ -122,7 +116,13 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
     public void onResume() {
         super.onResume();
 
+        if(!checkLocationPermission("android.permission.ACCESS_COARSE_LOCATION")){
 
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,}, 1020);
+        } else {
+
+            iniciarLocalizacion();
+        }
     }
 
     public void showSettingsAlert(String provider) {
@@ -245,7 +245,7 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
     }
 
 
-    public void setRangoTemperaturas(){
+    public void setRangoTemperaturas() throws JSONException, IOException,MalformedURLException {
 
         String urlApiClima = this.baseUrl + "/"+tipoSuelo+ "/"+tipoPlanta;
         RestUtils restApiClima = new RestUtils(urlApiClima);
@@ -258,12 +258,14 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-
+            throw e;
         } catch (IOException e1) {
             e1.printStackTrace();
+            throw e1;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException e2) {
+            e2.printStackTrace();
+            throw e2;
         }
     }
 
@@ -278,13 +280,14 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
             indiceLang = precipitacion / temperaturaAnual ;
            // tvApi3.setText("indiceLang: "+indiceLang) ;
         } catch (MalformedURLException e) {
+
             e.printStackTrace();
 
         } catch (IOException e1) {
             e1.printStackTrace();
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException e2) {
+            e2.printStackTrace();
         }
 
     }
@@ -314,14 +317,25 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
     private View.OnClickListener btnButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setRangoTemperaturas();
-            //tvApi3.setText("humin:"+huMin.toString()+" humax:"+huMax.toString());
-            Intent intent = new Intent(AutomaticoModoActivity.this, DeviceListActivity.class);
 
-            intent.putParcelableArrayListExtra("device.list", mDeviceList);
-            intent.putExtra("modoElegido", "automatico");
-            intent.putExtra("humedadPlanta", huMax.toString());
-            startActivity(intent);
+
+            try {
+                setRangoTemperaturas();
+                Intent intent = new Intent(AutomaticoModoActivity.this, AutomaticoTransferenciaArduino.class);
+                intent.putExtra("Direccion_Bluethoot",address);
+                intent.putExtra("tipoPlantaRecibida",tipoPlanta);
+                intent.putExtra("humedadRecibida",Integer.toString(huMax));
+                intent.putExtra("sueloRecibido",tipoSuelo);
+                intent.putExtra("temperaturaRecibida",Integer.toString(tempMax));
+                //intent.putParcelableArrayListExtra("device.list", mDeviceList);
+                //intent.putExtra("modoElegido", "automatico");
+                //intent.putExtra("humedadPlanta", huMax.toString());
+                startActivity(intent);
+            } catch (JSONException e) {
+                showPlantaInexisisteAlert();
+            } catch (IOException e) {
+                showPlantaInexisisteAlert();
+            }
 
         }
 
