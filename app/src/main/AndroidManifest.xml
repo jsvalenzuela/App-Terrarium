@@ -51,8 +51,8 @@
         </activity>
         <!--  Defino el activity para modo transferencia -->
         <activity android:name=".AutomaticoTransferenciaArduino" android:label="AndroBluetooth" />
-
-
+        <!-- Declaro activity para elegir el modo, luego de emparejar -->
+        <activity android:name=".ElegirModoActivity" android:label="AndroBluetooth" />
     </application>
 
 </manifest>
