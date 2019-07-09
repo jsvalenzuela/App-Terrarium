@@ -22,7 +22,7 @@ import java.util.UUID;
 public class AutomaticoTransferenciaArduino extends Activity {
     TextView txtTemperatura;
     TextView txtHumedad;
-    TextView txtEstadoRiego, txtHumedadServicio, txtTemperaturaRecibida, txtTipoPlanta, txtTipoSueloRecibido;
+    TextView txtEstadoRiego, txtHumedadServicio, txtTemperaturaServicio, txtTipoPlanta, txtTipoSueloRecibido;
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
     private BluetoothAdapter btAdapter = null;
@@ -46,10 +46,10 @@ public class AutomaticoTransferenciaArduino extends Activity {
         txtHumedad=(TextView)findViewById(R.id.tv_SensorHumedad);
         txtEstadoRiego = (TextView) findViewById(R.id.tvEstadoRiego);
         txtEstadoRiego.setVisibility(View.INVISIBLE);
-        txtHumedadServicio = findViewById(R.id.tvHumedadServicio);
-        //txtTemperaturaRecibida = findViewById(R.id.tv_Temperatura);
-        txtTipoPlanta = findViewById(R.id.tvTipoPlantaTrans);
-        txtTipoSueloRecibido = findViewById(R.id.tvSueloTrans);
+        txtHumedadServicio = (TextView) findViewById(R.id.tvHumedadServicio);
+        txtTemperaturaServicio = (TextView) findViewById(R.id.tvTemperaturaServicio);
+        txtTipoPlanta = (TextView) findViewById(R.id.tvTipoPlantaTrans);
+        txtTipoSueloRecibido = (TextView) findViewById(R.id.tvSueloTrans);
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         //defino el Handler de comunicacion entre el hilo Principal  el secundario.
@@ -174,17 +174,12 @@ public class AutomaticoTransferenciaArduino extends Activity {
         alertDialog.setPositiveButton("Aceptar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-                        Integer humedadRecibida = 60;
                         String modo = "Automatico";
-                        respuestaUser = "SI";
-
-                        mConnectedThread.write("#"+modo+"/"+humedadRecibida.toString()+"/"+respuestaUser+";");
-
+                        respuestaUser = "A";
+                        mConnectedThread.write("#"+modo+"/"+huMaxRecibida+"/"+ temperaturaRecibida+"/"+respuestaUser+";");
                         //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
                         //mostrar en interfaz el combo regando, dentro de hilo del bluetooth
-                        //AutomaticoModoActivity.this.startActivity(intent);
-                        txtEstadoRiego.setText("Regando .....");
+                        txtEstadoRiego.setText("Estamos trabajando en ello");
                         txtEstadoRiego.setVisibility(View.VISIBLE);
 
                     }
@@ -193,7 +188,13 @@ public class AutomaticoTransferenciaArduino extends Activity {
         alertDialog.setNegativeButton("Cancelar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        String modo = "Automatico";
+                        respuestaUser = "B";
+                        mConnectedThread.write("#"+modo+"/"+huMaxRecibida+"/"+ temperaturaRecibida+"/"+respuestaUser+";");
+                        //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
+                        //mostrar en interfaz el combo regando, dentro de hilo del bluetooth
+                        txtEstadoRiego.setText("Estamos trabajando en ello");
+                        txtEstadoRiego.setVisibility(View.VISIBLE);
                     }
                 });
 
