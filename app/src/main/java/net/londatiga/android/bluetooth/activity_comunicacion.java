@@ -102,6 +102,7 @@ public class activity_comunicacion extends Activity
         swicthIluminacion=(Switch) findViewById(R.id.sw_Iluminacion);
         switchRiego = (Switch)findViewById(R.id.sw_Riego);
 
+       /*
         //Se llena el spinner con los modos
         String[] vec_modo = {"Manual","Inteligente"};
         comboModo.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, vec_modo));
@@ -121,7 +122,7 @@ public class activity_comunicacion extends Activity
                 // vacio
 
             }
-        });
+        });*/
 
         //Configuracion del switch de ventilacion
         switchVentilacion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
