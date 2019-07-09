@@ -133,6 +133,7 @@ public class AutomaticoTransferenciaArduino extends Activity {
         txtHumedadServicio.setText(huMaxRecibida);
         txtTipoSueloRecibido.setText(sueloRecibido);
         txtTipoPlanta.setText(plantaRecibida);
+        txtTemperaturaServicio.setText(temperaturaRecibida);
         //se realiza la conexion del Bluethoot crea y se conectandose a atraves de un socket
         try {
             btSocket = createBluetoothSocket(device);

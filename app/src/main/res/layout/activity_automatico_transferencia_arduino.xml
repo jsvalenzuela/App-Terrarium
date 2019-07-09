@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/tv_SensorTemp"
-        android:layout_width="158dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tv_Temperatura"
         android:layout_alignBottom="@+id/tv_Temperatura"
@@ -32,9 +32,9 @@
         android:layout_marginStart="62dp"
         android:layout_marginLeft="62dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="49dp"
-        android:layout_marginRight="49dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginBottom="-11dp"
         android:layout_toEndOf="@+id/tv_Temperatura"
         android:layout_toRightOf="@+id/tv_Temperatura"
         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -50,9 +50,8 @@
 
     <TextView
         android:id="@+id/tv_SensorHumedad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_SensorTemp"
+        android:layout_width="171dp"
+        android:layout_height="26dp"
         android:layout_alignStart="@+id/tv_SensorTemp"
         android:layout_alignLeft="@+id/tv_SensorTemp"
         android:layout_alignBottom="@+id/tv_Humedad"
@@ -60,10 +59,9 @@
         android:layout_alignParentRight="true"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginRight="46dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginRight="51dp"
+        android:layout_marginBottom="-11dp"
         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
     <TextView
