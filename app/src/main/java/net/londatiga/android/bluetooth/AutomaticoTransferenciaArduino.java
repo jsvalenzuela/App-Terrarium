@@ -279,7 +279,6 @@ public class AutomaticoTransferenciaArduino extends Activity {
                 //if you cannot write, close the application
                 showToast("La conexion fallo");
                 finish();
-
             }
         }
     }

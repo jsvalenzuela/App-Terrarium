@@ -97,7 +97,7 @@ public class AutomaticoModoActivity extends Activity implements AdapterView.OnIt
         });
 
 
-        btnButton = findViewById(R.id.button);
+        btnButton =  (Button) findViewById(R.id.button);
         btnButton.setOnClickListener(btnButtonListener);
 
 

@@ -194,7 +194,7 @@ public class MainActivity extends Activity {
         btnActivar.setText("Activar");
         btnActivar.setEnabled(true);
 
-        btnEmparejar.setEnabled(false);
+       // btnEmparejar.setEnabled(false);
         btnBuscar.setEnabled(false);
     }
 
@@ -204,7 +204,7 @@ public class MainActivity extends Activity {
         btnActivar.setText("Activar");
         btnActivar.setEnabled(false);
 
-        btnEmparejar.setEnabled(false);
+      //  btnEmparejar.setEnabled(false);
         btnBuscar.setEnabled(false);
     }
 

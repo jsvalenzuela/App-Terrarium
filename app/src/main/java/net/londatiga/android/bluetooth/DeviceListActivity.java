@@ -152,7 +152,7 @@ public class DeviceListActivity extends Activity
 
                     Intent i = new Intent(DeviceListActivity.this, ElegirModoActivity.class);
                     i.putExtra("Direccion_Bluethoot", direccionBluethoot);
-
+                    startActivity(i);
                     /*Intent i = null;
                     if(modoElegido == null || modoElegido.isEmpty())
                     {
