@@ -176,7 +176,7 @@ public class AutomaticoTransferenciaArduino extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String modo = "Automatico";
-                        respuestaUser = "A";
+                        respuestaUser = "2";
                         mConnectedThread.write("#"+modo+"/"+huMaxRecibida+"/"+ temperaturaRecibida+"/"+respuestaUser+";");
                         //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
                         //mostrar en interfaz el combo regando, dentro de hilo del bluetooth
@@ -190,7 +190,7 @@ public class AutomaticoTransferenciaArduino extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String modo = "Automatico";
-                        respuestaUser = "B";
+                        respuestaUser = "1";
                         mConnectedThread.write("#"+modo+"/"+huMaxRecibida+"/"+ temperaturaRecibida+"/"+respuestaUser+";");
                         //Escribir en bluetooth el mensaje para enviar el clima y humedad de servicios
                         //mostrar en interfaz el combo regando, dentro de hilo del bluetooth
